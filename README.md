@@ -29,14 +29,14 @@ class FizzBuzzSpec extends FlatSpec {
   }
 
   "A FizzBuzz" should "pass tests from a file" in {
-    val tests = CsvTable[Int, String].fromFile("src/test/resources/fizzbuzz.csv")
+    val tests = CsvTable.fromFile[Int, String]("src/test/resources/fizzbuzz.csv")
     forAll (tests) { (n: Int, expected: String) => 
       assert(FizzBuzz(n) == expected)
     }
   }
 
   "A FizzBuzz" should "pass tests from a resource file" in {
-    val tests = CsvTable[Int, String].fromResource("fizzbuzz.csv") // from `src/test/resouces`
+    val tests = CsvTable.fromResource[Int, String]("fizzbuzz.csv") // from `src/test/resouces`
     forAll (tests) { (n: Int, expected: String) => 
       assert(FizzBuzz(n) == expected)
     }
