@@ -9,23 +9,40 @@ class CsvTableSpec extends WordSpecLike with Matchers {
 
     "decode Int values in csv" in {
       val expected = Iterator(1, 2)
-      val rows = CsvTable.fromFile[Int]("src/test/resources/int.csv")
+      val rows = CsvTable.fromResource[Int]("int.csv")
+
+      forAll(rows) { _ should be(expected.next) }
+    }
+
+    "decode Double values in csv" in {
+      val expected = Iterator(42, 3.14)
+      val rows = CsvTable.fromResource[Double]("double.csv")
 
       forAll(rows) { _ should be(expected.next) }
     }
 
     "decode Boolean values in csv" in {
       val expected = Iterator(true, false)
-      val rows = CsvTable.fromFile[Boolean]("src/test/resources/boolean.csv")
+      val rows = CsvTable.fromResource[Boolean]("boolean.csv")
 
       forAll(rows) { _ should be(expected.next) }
     }
 
     "decode String values in csv" in {
-      val expected = Iterator("foo", "foo bar", "foo\nbar\nbaz")
-      val rows = CsvTable.fromFile[String]("src/test/resources/string.csv")
+      val expected = Iterator("", "foo", "foo bar", "foo\nbar\nbaz")
+      val rows = CsvTable.fromResource[String]("string.csv")
 
       forAll(rows) { _ should be(expected.next) }
+    }
+
+    "decode Option[String] values in csv" in {
+      // TODO: support optional single column
+      val expected = Iterator(None, Some("foo"))
+      val rows = CsvTable.fromResource[Int, Option[String]]("option.csv")
+
+      forAll(rows) { (_: Int, opt: Option[String]) =>
+        opt should be(expected.next)
+      }
     }
 
     "decode values in csv as a case class" in {
