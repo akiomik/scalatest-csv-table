@@ -1,6 +1,6 @@
 package com.github.akiomik.scalatest
 
-import java.io.File
+import java.io.{File, IOException}
 import scala.io.Source
 
 import kantan.csv._
@@ -32,11 +32,18 @@ object CsvTable {
   type Header21 = (String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String)
   type Header22 = (String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, String)
 
+  def validate(csv: String): Unit = {
+    if (csv.lines.size < 2)
+      throw new IOException("A csv must have 2 lines or more (body with header).")
+  }
+
   def header[A](csv: String)(implicit decoder: RowDecoder[A]): A = {
     csv.lines.next.unsafeReadCsvRow[A](rfc)
   }
 
   def apply[A](csv: String)(implicit decoder: RowDecoder[A]) = {
+    validate(csv)
+
     Table(
       header[Header1](csv),
       csv.unsafeReadCsv[Seq, A](rfc.withHeader): _*
@@ -44,6 +51,8 @@ object CsvTable {
   }
 
   def apply[A, B](csv: String)(implicit decoder: RowDecoder[(A, B)]) = {
+    validate(csv)
+
     Table(
       header[Header2](csv),
       csv.unsafeReadCsv[Seq, (A, B)](rfc.withHeader): _*
@@ -51,6 +60,8 @@ object CsvTable {
   }
 
   def apply[A, B, C](csv: String)(implicit decoder: RowDecoder[(A, B, C)]) = {
+    validate(csv)
+
     Table(
       header[Header3](csv),
       csv.unsafeReadCsv[Seq, (A, B, C)](rfc.withHeader): _*
@@ -58,6 +69,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D](csv: String)(implicit decoder: RowDecoder[(A, B, C, D)]) = {
+    validate(csv)
+
     Table(
       header[Header4](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D)](rfc.withHeader): _*
@@ -65,6 +78,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E)]) = {
+    validate(csv)
+
     Table(
       header[Header5](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E)](rfc.withHeader): _*
@@ -72,6 +87,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F)]) = {
+    validate(csv)
+
     Table(
       header[Header6](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F)](rfc.withHeader): _*
@@ -79,6 +96,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G)]) = {
+    validate(csv)
+
     Table(
       header[Header7](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G)](rfc.withHeader): _*
@@ -86,6 +105,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H)]) = {
+    validate(csv)
+
     Table(
       header[Header8](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H)](rfc.withHeader): _*
@@ -93,6 +114,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I)]) = {
+    validate(csv)
+
     Table(
       header[Header9](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I)](rfc.withHeader): _*
@@ -100,6 +123,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J)]) = {
+    validate(csv)
+
     Table(
       header[Header10](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J)](rfc.withHeader): _*
@@ -107,6 +132,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K)]) = {
+    validate(csv)
+
     Table(
       header[Header11](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K)](rfc.withHeader): _*
@@ -114,6 +141,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L)]) = {
+    validate(csv)
+
     Table(
       header[Header12](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L)](rfc.withHeader): _*
@@ -121,6 +150,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M)]) = {
+    validate(csv)
+
     Table(
       header[Header13](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M)](rfc.withHeader): _*
@@ -128,6 +159,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N)]) = {
+    validate(csv)
+
     Table(
       header[Header14](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N)](rfc.withHeader): _*
@@ -135,6 +168,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O)]) = {
+    validate(csv)
+
     Table(
       header[Header15](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O)](rfc.withHeader): _*
@@ -142,6 +177,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P)]) = {
+    validate(csv)
+
     Table(
       header[Header16](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P)](rfc.withHeader): _*
@@ -149,6 +186,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q)]) = {
+    validate(csv)
+
     Table(
       header[Header17](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q)](rfc.withHeader): _*
@@ -156,6 +195,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R)]) = {
+    validate(csv)
+
     Table(
       header[Header18](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R)](rfc.withHeader): _*
@@ -163,6 +204,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S)]) = {
+    validate(csv)
+
     Table(
       header[Header19](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S)](rfc.withHeader): _*
@@ -170,6 +213,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T)]) = {
+    validate(csv)
+
     Table(
       header[Header20](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T)](rfc.withHeader): _*
@@ -177,6 +222,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U)]) = {
+    validate(csv)
+
     Table(
       header[Header21](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U)](rfc.withHeader): _*
@@ -184,6 +231,8 @@ object CsvTable {
   }
 
   def apply[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V](csv: String)(implicit decoder: RowDecoder[(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V)]) = {
+    validate(csv)
+
     Table(
       header[Header22](csv),
       csv.unsafeReadCsv[Seq, (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V)](rfc.withHeader): _*

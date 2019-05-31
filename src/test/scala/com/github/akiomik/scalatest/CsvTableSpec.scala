@@ -1,11 +1,16 @@
 package com.github.akiomik.scalatest
 
+import java.io.IOException
 import org.scalatest._
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
 class CsvTableSpec extends WordSpecLike with Matchers {
 
   "A CsvTable" should {
+    "throw IOException if csv is less than 2 lines" in {
+      val csv = "1,2"
+      an [IOException] should be thrownBy CsvTable[Int, Int](csv)
+    }
 
     "decode Int values in csv" in {
       val expected = Iterator(1, 2)
