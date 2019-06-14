@@ -1,3 +1,5 @@
+enablePlugins(spray.boilerplate.BoilerplatePlugin)
+
 name         := "scalatest-csv-table"
 scalaVersion := "2.12.8"
 version      := "1.0.0"

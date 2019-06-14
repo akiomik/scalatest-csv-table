@@ -1,0 +1,49 @@
+package com.github.akiomik.scalatest
+
+import java.io.{File, IOException}
+import scala.io.Source
+
+import kantan.csv._
+import kantan.csv.ops._
+import kantan.csv.generic._
+import org.scalatest.prop.Tables._
+
+object CsvTable {
+
+  def validate(csv: String): Unit = {
+    if (csv.lines.size < 2)
+      throw new IOException("A csv must have 2 lines or more (body with header).")
+  }
+
+  def header[A](csv: String)(implicit decoder: RowDecoder[A]): A = {
+    csv.lines.next.unsafeReadCsvRow[A](rfc)
+  }
+
+  [#def apply[[#A1#]](csv: String)(implicit decoder: RowDecoder[([#A1#])]) = {
+    validate(csv)
+
+    Table(
+      header[([#String#])](csv),
+      csv.unsafeReadCsv[Seq, ([#A1#])](rfc.withHeader): _*
+    )
+  }#
+
+  ]
+
+  [#def fromFile[[#A1#]](name: String)(implicit decoder: RowDecoder[([#A1#])]) = {
+    val s = Source.fromFile(name)
+    try apply[[#A1#]](s.getLines.mkString("\n"))
+    finally s.close
+  }#
+
+  ]
+
+  [#def fromResource[[#A1#]](name: String)(implicit decoder: RowDecoder[([#A1#])]) = {
+    val s = Source.fromResource(name)
+    try apply[[#A1#]](s.getLines.mkString("\n"))
+    finally s.close
+  }#
+
+  ]
+
+}
