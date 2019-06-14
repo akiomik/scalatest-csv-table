@@ -1,6 +1,6 @@
 package com.github.akiomik.scalatest
 
-import java.io.{File, IOException}
+import java.io.IOException
 import scala.io.Source
 
 import kantan.csv._
