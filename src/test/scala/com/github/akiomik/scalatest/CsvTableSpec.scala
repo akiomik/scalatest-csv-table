@@ -7,9 +7,14 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 class CsvTableSpec extends WordSpecLike with Matchers {
 
   "A CsvTable" should {
-    "throw IOException if csv is less than 2 lines" in {
-      val csv = "1,2"
+    "throw IOException if csv is empty" in {
+      val csv = ""
       an [IOException] should be thrownBy CsvTable[Int, Int](csv)
+    }
+
+    "throw no exception if csv body is empty" in {
+      val csv = "1,2"
+      noException should be thrownBy CsvTable[Int, Int](csv)
     }
 
     "decode Int values in csv" in {
