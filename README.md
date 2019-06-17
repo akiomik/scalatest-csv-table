@@ -1,8 +1,21 @@
 scalatest-csv-table
 ===================
+[![Download](https://api.bintray.com/packages/akiomik/maven/scalatest-csv-table/images/download.svg)](https://bintray.com/akiomik/maven/scalatest-csv-table/_latestVersion)
 [![CircleCI](https://circleci.com/gh/akiomik/scalatest-csv-table.svg?style=svg)](https://circleci.com/gh/akiomik/scalatest-csv-table)
 
 A [scalatest](http://www.scalatest.org/) helper for loading csv files as [`Table`](http://www.scalatest.org/user_guide/table_driven_property_checks).
+
+## Getting started
+
+scalatest-csv-table is currently available for Scala 2.12.
+
+Add the following lines to your `build.sbt`.
+
+```scala
+resolvers += Resolver.bintrayRepo("akiomik", "maven")
+
+libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.0.0" % Test
+```
 
 ## Basic usage
 
