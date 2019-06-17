@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+
+    docker:
+      - image: openjdk:8
+
+    environment:
+      SBT_VERSION: 1.2.8
+
+    steps:
+      - run:
+          name: install sbt
+          command: |
+            apt update && apt install -y curl
+            curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
+            dpkg -i sbt-$SBT_VERSION.deb && rm sbt-$SBT_VERSION.deb
+            apt update && apt install -y sbt git
+            apt clean && apt autoclean
+
+      - checkout
+
+      - restore_cache:
+          key: sbt-{{ checksum "build.sbt" }}-{{ checksum "project/plugins.sbt" }}
+
+      - run:
+          name: run tests
+          command: |
+            sbt test
+
+      - save_cache:
+          key: sbt-{{ checksum "build.sbt" }}-{{ checksum "project/plugins.sbt" }}
+          paths:
+            - "~/.ivy2/cache"
+            - "~/.sbt"
+            - "~/.m2"
