@@ -1,7 +1,7 @@
 package com.github.akiomik.scalatest
 
-import java.io.IOException
-import scala.io.Source
+import java.io.{Reader, IOException}
+import scala.io.{Source, BufferedSource}
 
 import kantan.csv._
 import kantan.csv.ops._
@@ -9,35 +9,45 @@ import kantan.csv.generic._
 import org.scalatest.prop.Tables._
 
 object CsvTable {
+  implicit val sourceInput: CsvSource[BufferedSource] = CsvSource[Reader].contramap(_.reader)
 
-  def unsafeReadHeader[A](csv: String)(implicit decoder: RowDecoder[A]): A = {
-    val lines = csv.lines
-    if (!lines.hasNext)
+  private def unsafeReadHeader[S <% CsvSourceOps[S], H: HeaderDecoder](csv: S): H = {
+    val reader = csv.asUnsafeCsvReader[H](rfc)
+
+    if (!reader.hasNext)
       throw new IOException("An empty csv passed.")
 
-    lines.next.unsafeReadCsvRow[A](rfc)
+    reader.next
   }
 
-  [#def apply[[#A1#]](csv: String)(implicit decoder: RowDecoder[([#A1#])]) = {
+  [#private def apply[S <% CsvSourceOps[S], [#T1#]](csv: S)(
+    implicit
+    headerDecoderH: HeaderDecoder[([#String#])],
+    headerDecoderT: HeaderDecoder[([#T1#])]
+  ) =
     Table(
-      unsafeReadHeader[([#String#])](csv),
-      csv.unsafeReadCsv[Seq, ([#A1#])](rfc.withHeader): _*
-    )
-  }#
+      unsafeReadHeader[S, ([#String#])](csv),
+      csv.unsafeReadCsv[Seq, ([#T1#])](rfc.withHeader): _*
+    )#
 
   ]
 
-  [#def fromFile[[#A1#]](name: String)(implicit decoder: RowDecoder[([#A1#])]) = {
+  [#def fromString[[#T1#]](csv: String)(implicit headerDecoder: HeaderDecoder[([#T1#])]) =
+    apply[String, [#T1#]](csv)#
+
+  ]
+
+  [#def fromFile[[#T1#]](name: String)(implicit headerDecoder: HeaderDecoder[([#T1#])]) = {
     val s = Source.fromFile(name)
-    try apply[[#A1#]](s.getLines.mkString("\n"))
+    try apply[BufferedSource, [#T1#]](s)
     finally s.close
   }#
 
   ]
 
-  [#def fromResource[[#A1#]](name: String)(implicit decoder: RowDecoder[([#A1#])]) = {
+  [#def fromResource[[#T1#]](name: String)(implicit headerDecoder: HeaderDecoder[([#T1#])]) = {
     val s = Source.fromResource(name)
-    try apply[[#A1#]](s.getLines.mkString("\n"))
+    try apply[BufferedSource, [#T1#]](s)
     finally s.close
   }#
 

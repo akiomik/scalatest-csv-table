@@ -9,12 +9,12 @@ class CsvTableSpec extends WordSpecLike with Matchers {
   "A CsvTable" should {
     "throw IOException if csv is empty" in {
       val csv = ""
-      an [IOException] should be thrownBy CsvTable[Int, Int](csv)
+      an[IOException] should be thrownBy CsvTable.fromString[Int, Int](csv)
     }
 
     "throw no exception if csv body is empty" in {
       val csv = "1,2"
-      noException should be thrownBy CsvTable[Int, Int](csv)
+      noException should be thrownBy CsvTable.fromString[Int, Int](csv)
     }
 
     "decode Int values in csv" in {
@@ -65,6 +65,292 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val rows = CsvTable.fromFile[Foo]("src/test/resources/case-class.csv")
 
       forAll(rows) { _ should be(expected.next) }
+    }
+
+    "create a Table from 1-column csv string" in {
+      val expected = Iterator(1, 2)
+      val csv =
+        """n
+          |1
+          |2""".stripMargin
+      val rows = CsvTable.fromString[Int](csv)
+
+      rows.heading should be("n")
+      forAll(rows) { _ should be(expected.next) }
+    }
+
+    "create a Table from 2-column csv string" in {
+      val expected = Iterator(3, 5)
+      val csv =
+        """n1,n2
+          |1,2
+          |2,3""".stripMargin
+      val rows = CsvTable.fromString[Int, Int](csv)
+
+      rows.heading should be("n1", "n2")
+      forAll(rows) { (n1, n2) =>
+        n1 + n2 should be(expected.next)
+      }
+    }
+
+    "create a Table from 3-column csv string" in {
+      val csv =
+        """n1,n2,expected
+          |1,2,3
+          |2,3,5""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "expected")
+      forAll(rows) { (n1, n2, expected) =>
+        n1 + n2 should be(expected)
+      }
+    }
+
+    "create a Table from 4-column csv string" in {
+      val csv =
+        """n1,n2,n3,expected
+          |1,2,3,6
+          |2,3,4,9""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "expected")
+      forAll(rows) { (n1, n2, n3, expected) =>
+        n1 + n2 + n3 should be(expected)
+      }
+    }
+
+    "create a Table from 5-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,expected
+          |1,2,3,4,10
+          |2,3,4,5,14""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "expected")
+      forAll(rows) { (n1, n2, n3, n4, expected) =>
+        n1 + n2 + n3 + n4 should be(expected)
+      }
+    }
+
+    "create a Table from 6-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,expected
+          |1,2,3,4,5,15
+          |2,3,4,5,6,20""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, expected) =>
+        n1 + n2 + n3 + n4 + n5 should be(expected)
+      }
+    }
+
+    "create a Table from 7-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,expected
+          |1,2,3,4,5,6,21
+          |2,3,4,5,6,7,27""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 should be(expected)
+      }
+    }
+
+    "create a Table from 8-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,expected
+          |1,2,3,4,5,6,7,28
+          |2,3,4,5,6,7,8,35""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 should be(expected)
+      }
+    }
+
+    "create a Table from 9-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,expected
+          |1,2,3,4,5,6,7,8,36
+          |2,3,4,5,6,7,8,9,44""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 should be(expected)
+      }
+    }
+
+    "create a Table from 10-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,expected
+          |1,2,3,4,5,6,7,8,9,45
+          |2,3,4,5,6,7,8,9,10,54""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 should be(expected)
+      }
+    }
+
+    "create a Table from 11-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,expected
+          |1,2,3,4,5,6,7,8,9,10,55
+          |2,3,4,5,6,7,8,9,10,11,65""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 should be(expected)
+      }
+    }
+
+    "create a Table from 12-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,expected
+          |1,2,3,4,5,6,7,8,9,10,11,66
+          |2,3,4,5,6,7,8,9,10,11,12,77""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 should be(expected)
+      }
+    }
+
+    "create a Table from 13-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,78
+          |2,3,4,5,6,7,8,9,10,11,12,13,90""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 should be(expected)
+      }
+    }
+
+    "create a Table from 14-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,91
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,104""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 should be(expected)
+      }
+    }
+
+    "create a Table from 15-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,105
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,119""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 should be(expected)
+      }
+    }
+
+    "create a Table from 16-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,120
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,135""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 should be(expected)
+      }
+    }
+
+    "create a Table from 17-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,136
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,152""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 should be(expected)
+      }
+    }
+
+    "create a Table from 18-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,153
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,170""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 should be(expected)
+      }
+    }
+
+    "create a Table from 19-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,171
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,189""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 should be(expected)
+      }
+    }
+
+    "create a Table from 20-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,190
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,209""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 should be(expected)
+      }
+    }
+
+    "create a Table from 21-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,210
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,230""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 should be(expected)
+      }
+    }
+
+    "create a Table from 22-column csv string" in {
+      val csv =
+        """n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20,n21,expected
+          |1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,231
+          |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,252""".stripMargin
+      val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
+
+      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected")
+      forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, expected) =>
+        n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 + n21 should be(expected)
+      }
     }
 
     "create a Table from 1-column csv file" in {
