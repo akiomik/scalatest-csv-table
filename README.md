@@ -23,7 +23,7 @@ class FizzBuzzSpec extends FlatSpec {
         |4,4
         |5,Buzz""".stripMargin
 
-    val tests = CsvTable[Int, String](csv)
+    val tests = CsvTable.fromString[Int, String](csv)
     forAll (tests) { (n: Int, expected: String) => 
       assert(FizzBuzz(n) == expected)
     }
@@ -69,7 +69,7 @@ class FooSpec extends FlatSpec {
         |4,e,false
         |5,e,true""".stripMargin
 
-    val tests = CsvTable[Foo](csv)
+    val tests = CsvTable.fromString[Foo](csv)
     forAll (tests) { (foo: Foo) => 
       // ...
     }
