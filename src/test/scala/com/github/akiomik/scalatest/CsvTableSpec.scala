@@ -1,22 +1,14 @@
 package com.github.akiomik.scalatest
 
 import java.io.IOException
+import java.nio.file.{NoSuchFileException, AccessDeniedException}
+
 import org.scalatest._
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
 class CsvTableSpec extends WordSpecLike with Matchers {
 
   "A CsvTable" should {
-    "throw IOException if csv is empty" in {
-      val csv = ""
-      an[IOException] should be thrownBy CsvTable.fromString[Int, Int](csv)
-    }
-
-    "throw no exception if csv body is empty" in {
-      val csv = "1,2"
-      noException should be thrownBy CsvTable.fromString[Int, Int](csv)
-    }
-
     "decode Int values in csv" in {
       val expected = Iterator(1, 2)
       val rows = CsvTable.fromResource[Int]("int.csv")
@@ -875,6 +867,21 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 + n21 should be(expected)
       }
+    }
+
+    "throw NoSuchFileException if csv file does not exist" in {
+      an[NoSuchFileException] should be thrownBy CsvTable.fromFile[Int, Int]("exist.csv")
+      an[NoSuchFileException] should be thrownBy CsvTable.fromResource[Int, Int]("exist.csv")
+    }
+
+    "throw IOException if csv is empty" in {
+      val csv = ""
+      an[IOException] should be thrownBy CsvTable.fromString[Int, Int](csv)
+    }
+
+    "throw no exception if csv body is empty" in {
+      val csv = "1,2"
+      noException should be thrownBy CsvTable.fromString[Int, Int](csv)
     }
 
   }

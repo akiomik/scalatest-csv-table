@@ -1,15 +1,14 @@
 package com.github.akiomik.scalatest
 
-import java.io.{Reader, IOException}
-import scala.io.{Source, BufferedSource}
+import java.io.{File, IOException}
+import java.net.URL
+import java.nio.file.NoSuchFileException
 
 import kantan.csv._
 import kantan.csv.ops._
-import kantan.csv.generic._
 import org.scalatest.prop.Tables._
 
 object CsvTable {
-  implicit val sourceInput: CsvSource[BufferedSource] = CsvSource[Reader].contramap(_.reader)
 
   private def unsafeReadHeader[S <% CsvSourceOps[S], H: HeaderDecoder](csv: S): H = {
     val reader = csv.asUnsafeCsvReader[H](rfc)
@@ -37,18 +36,15 @@ object CsvTable {
 
   ]
 
-  [#def fromFile[[#T1#]](name: String)(implicit headerDecoder: HeaderDecoder[([#T1#])]) = {
-    val s = Source.fromFile(name)
-    try apply[BufferedSource, [#T1#]](s)
-    finally s.close
-  }#
+  [#def fromFile[[#T1#]](name: String)(implicit headerDecoder: HeaderDecoder[([#T1#])]) =
+    apply[File, [#T1#]](new File(name))#
 
   ]
 
   [#def fromResource[[#T1#]](name: String)(implicit headerDecoder: HeaderDecoder[([#T1#])]) = {
-    val s = Source.fromResource(name)
-    try apply[BufferedSource, [#T1#]](s)
-    finally s.close
+    val res = Thread.currentThread.getContextClassLoader.getResource(name)
+    if (res == null) throw new NoSuchFileException(name)
+    apply[URL, [#T1#]](res)
   }#
 
   ]
