@@ -1,5 +1,6 @@
 scalatest-csv-table
 ===================
+[![CircleCI](https://circleci.com/gh/akiomik/scalatest-csv-table.svg?style=svg)](https://circleci.com/gh/akiomik/scalatest-csv-table)
 
 A [scalatest](http://www.scalatest.org/) helper for loading csv files as [`Table`](http://www.scalatest.org/user_guide/table_driven_property_checks).
 
