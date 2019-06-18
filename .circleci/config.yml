@@ -27,7 +27,12 @@ jobs:
       - run:
           name: run tests
           command: |
-            sbt test
+            sbt clean coverage test coverageReport
+
+      - run:
+          name: send coverage
+          command: |
+            bash <(curl -s https://codecov.io/bash)
 
       - save_cache:
           key: sbt-{{ checksum "build.sbt" }}-{{ checksum "project/plugins.sbt" }}
