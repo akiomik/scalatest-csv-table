@@ -88,3 +88,4 @@ class FooSpec extends FlatSpec {
     }
   }
 }
+```
