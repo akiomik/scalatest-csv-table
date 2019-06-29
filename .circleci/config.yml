@@ -27,7 +27,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            sbt clean test
+            sbt clean +test
 
       - save_cache:
           key: sbt-{{ checksum "build.sbt" }}-{{ checksum "project/plugins.sbt" }}
