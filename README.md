@@ -7,14 +7,14 @@ A [scalatest](http://www.scalatest.org/) helper for loading csv files as [`Table
 
 ## Getting started
 
-scalatest-csv-table is currently available for Scala 2.12.
+scalatest-csv-table is currently available for Scala 2.11 and 2.12.
 
 Add the following lines to your `build.sbt`.
 
 ```scala
 resolvers += Resolver.jcenterRepo
 
-libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.0.0" % Test
+libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.0.1" % Test
 ```
 
 ## Basic usage
