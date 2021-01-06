@@ -15,7 +15,7 @@
 package com.github.akiomik.scalatest
 
 import java.io.IOException
-import java.nio.file.{NoSuchFileException, AccessDeniedException}
+import java.nio.file.{AccessDeniedException, NoSuchFileException}
 
 import org.scalatest._
 import org.scalatest.prop.TableDrivenPropertyChecks._
