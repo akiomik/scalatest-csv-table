@@ -24,7 +24,7 @@ import org.scalatest.prop.Tables._
 
 object CsvTable {
 
-  private def unsafeReadHeader[S <% CsvSourceOps[S], H: HeaderDecoder](csv: S): H = {
+  private def unsafeReadHeader[S, H: HeaderDecoder](csv: S)(implicit cso: S => CsvSourceOps[S]): H = {
     val reader = csv.asUnsafeCsvReader[H](rfc)
 
     if (!reader.hasNext)
@@ -33,10 +33,11 @@ object CsvTable {
     reader.next()
   }
 
-  [#private def apply[S <% CsvSourceOps[S], [#T1#]](csv: S)(
+  [#private def apply[S, [#T1#]](csv: S)(
     implicit
     headerDecoderH: HeaderDecoder[([#String#])],
-    headerDecoderT: HeaderDecoder[([#T1#])]
+    headerDecoderT: HeaderDecoder[([#T1#])],
+    cso: S => CsvSourceOps[S]
   ) =
     Table(
       unsafeReadHeader[S, ([#String#])](csv),
