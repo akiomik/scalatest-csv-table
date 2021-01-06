@@ -19,5 +19,8 @@ libraryDependencies ++= Seq(
   "com.nrinaudo" %% "kantan.csv-generic" % kantanCsvVersion
 )
 
+resolvers += Resolver.jcenterRepo
+mimaPreviousArtifacts := Set(organization.value %% name.value % "1.0.0")
+
 bintrayRepository := "maven"
 bintrayOrganization := None
