@@ -30,7 +30,7 @@ object CsvTable {
     if (!reader.hasNext)
       throw new IOException("An empty csv passed.")
 
-    reader.next
+    reader.next()
   }
 
   [#private def apply[S <% CsvSourceOps[S], [#T1#]](csv: S)(

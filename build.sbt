@@ -25,6 +25,17 @@ libraryDependencies ++= Seq(
   "com.nrinaudo" %% "kantan.csv-generic" % kantanCsvVersion
 )
 
+scalacOptions ++= Seq(
+  "-deprecation",
+  "-feature",
+  "-unchecked",
+  "-Xlint",
+  "-Ywarn-dead-code",
+  "-Ywarn-numeric-widen",
+  "-Ywarn-unused",
+  "-Ywarn-value-discard"
+)
+
 resolvers += Resolver.jcenterRepo
 mimaPreviousArtifacts := Set(organization.value %% name.value % "1.0.0")
 
