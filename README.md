@@ -20,12 +20,12 @@ libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.0.2" %
 ## Basic usage
 
 ```scala
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
 import com.github.akiomik.scalatest._
 
-class FizzBuzzSpec extends FlatSpec {
+class FizzBuzzSpec extends AnyFlatSpec {
 
   "A FizzBuzz" should "pass tests from a string" in {
     val csv =
@@ -64,13 +64,13 @@ Use [`RowDecoder` of kantan.csv](https://nrinaudo.github.io/kantan.csv/rows_as_c
 
 ```scala
 import com.github.akiomik.scalatest._
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import kantan.csv._
 
 case class Foo(i: Int, s: String, b: Boolean)
 
-class FooSpec extends FlatSpec {
+class FooSpec extends AnyFlatSpec {
   implicit val decoder = RowDecoder.decoder(0, 1, 2)(Foo.apply _) //
 
   "A Foo" should "pass tests from a string" in {
