@@ -29,4 +29,4 @@ jobs:
     - name: Run tests
       run: sbt '+ test'
     - name: Run mima
-      run: sbt '++ 2.12.8 -v mimaReportBinaryIssues'
+      run: sbt '++ 2.12.12 -v mimaReportBinaryIssues'
