@@ -17,10 +17,11 @@ package com.github.akiomik.scalatest
 import java.io.IOException
 import java.nio.file.NoSuchFileException
 
-import org.scalatest._
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class CsvTableSpec extends WordSpecLike with Matchers {
+class CsvTableSpec extends AnyWordSpecLike with Matchers {
 
   "A CsvTable" should {
     "decode Int values in csv" in {
