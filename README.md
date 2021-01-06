@@ -14,7 +14,7 @@ Add the following lines to your `build.sbt`.
 ```scala
 resolvers += Resolver.jcenterRepo
 
-libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.0.1" % Test
+libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.0.2" % Test
 ```
 
 ## Basic usage
