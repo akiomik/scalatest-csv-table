@@ -15,7 +15,7 @@
 package com.github.akiomik.scalatest
 
 import java.io.IOException
-import java.nio.file.{AccessDeniedException, NoSuchFileException}
+import java.nio.file.NoSuchFileException
 
 import org.scalatest._
 import org.scalatest.prop.TableDrivenPropertyChecks._
@@ -27,28 +27,28 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val expected = Iterator(1, 2)
       val rows = CsvTable.fromResource[Int]("int.csv")
 
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "decode Double values in csv" in {
       val expected = Iterator(42, 3.14)
       val rows = CsvTable.fromResource[Double]("double.csv")
 
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "decode Boolean values in csv" in {
       val expected = Iterator(true, false)
       val rows = CsvTable.fromResource[Boolean]("boolean.csv")
 
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "decode String values in csv" in {
       val expected = Iterator("", "foo", "foo bar", "foo\nbar\nbaz")
       val rows = CsvTable.fromResource[String]("string.csv")
 
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "decode Option[String] values in csv" in {
@@ -57,7 +57,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val rows = CsvTable.fromResource[Int, Option[String]]("option.csv")
 
       forAll(rows) { (_: Int, opt: Option[String]) =>
-        opt should be(expected.next)
+        opt should be(expected.next())
       }
     }
 
@@ -70,7 +70,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val expected = Iterator(Foo("foo", 0, true), Foo("bar", -42, false))
       val rows = CsvTable.fromFile[Foo]("src/test/resources/case-class.csv")
 
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "create a Table from 1-column csv string" in {
@@ -82,7 +82,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val rows = CsvTable.fromString[Int](csv)
 
       rows.heading should be("n")
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "create a Table from 2-column csv string" in {
@@ -93,9 +93,9 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3""".stripMargin
       val rows = CsvTable.fromString[Int, Int](csv)
 
-      rows.heading should be("n1", "n2")
+      rows.heading should be(("n1", "n2"))
       forAll(rows) { (n1, n2) =>
-        n1 + n2 should be(expected.next)
+        n1 + n2 should be(expected.next())
       }
     }
 
@@ -106,7 +106,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,5""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "expected")
+      rows.heading should be(("n1", "n2", "expected"))
       forAll(rows) { (n1, n2, expected) =>
         n1 + n2 should be(expected)
       }
@@ -119,7 +119,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,9""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "expected")
+      rows.heading should be(("n1", "n2", "n3", "expected"))
       forAll(rows) { (n1, n2, n3, expected) =>
         n1 + n2 + n3 should be(expected)
       }
@@ -132,7 +132,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,14""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "expected"))
       forAll(rows) { (n1, n2, n3, n4, expected) =>
         n1 + n2 + n3 + n4 should be(expected)
       }
@@ -145,7 +145,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,20""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, expected) =>
         n1 + n2 + n3 + n4 + n5 should be(expected)
       }
@@ -158,7 +158,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,27""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 should be(expected)
       }
@@ -171,7 +171,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,35""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 should be(expected)
       }
@@ -184,7 +184,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,44""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 should be(expected)
       }
@@ -197,7 +197,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,54""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 should be(expected)
       }
@@ -210,7 +210,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,65""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 should be(expected)
       }
@@ -223,7 +223,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,77""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 should be(expected)
       }
@@ -236,7 +236,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,90""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 should be(expected)
       }
@@ -249,7 +249,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,104""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 should be(expected)
       }
@@ -262,7 +262,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,119""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 should be(expected)
       }
@@ -275,7 +275,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,135""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 should be(expected)
       }
@@ -288,7 +288,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,152""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 should be(expected)
       }
@@ -301,7 +301,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,170""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 should be(expected)
       }
@@ -314,7 +314,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,189""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 should be(expected)
       }
@@ -327,7 +327,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,209""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 should be(expected)
       }
@@ -340,7 +340,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,230""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 should be(expected)
       }
@@ -353,7 +353,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           |2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,252""".stripMargin
       val rows = CsvTable.fromString[Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int](csv)
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 + n21 should be(expected)
       }
@@ -364,16 +364,16 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val rows = CsvTable.fromFile[Int]("src/test/resources/01.csv")
 
       rows.heading should be("n")
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "create a Table from 2-column csv file" in {
       val expected = Iterator(3, 5)
       val rows = CsvTable.fromFile[Int, Int]("src/test/resources/02.csv")
 
-      rows.heading should be("n1", "n2")
+      rows.heading should be(("n1", "n2"))
       forAll(rows) { (n1, n2) =>
-        n1 + n2 should be(expected.next)
+        n1 + n2 should be(expected.next())
       }
     }
 
@@ -383,7 +383,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/03.csv"
         )
 
-      rows.heading should be("n1", "n2", "expected")
+      rows.heading should be(("n1", "n2", "expected"))
       forAll(rows) { (n1, n2, expected) =>
         n1 + n2 should be(expected)
       }
@@ -395,7 +395,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/04.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "expected")
+      rows.heading should be(("n1", "n2", "n3", "expected"))
       forAll(rows) { (n1, n2, n3, expected) =>
         n1 + n2 + n3 should be(expected)
       }
@@ -407,7 +407,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/05.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "expected"))
       forAll(rows) { (n1, n2, n3, n4, expected) =>
         n1 + n2 + n3 + n4 should be(expected)
       }
@@ -419,7 +419,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/06.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, expected) =>
         n1 + n2 + n3 + n4 + n5 should be(expected)
       }
@@ -431,7 +431,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/07.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 should be(expected)
       }
@@ -443,7 +443,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/08.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 should be(expected)
       }
@@ -455,7 +455,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/09.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 should be(expected)
       }
@@ -467,7 +467,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/10.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 should be(expected)
       }
@@ -479,7 +479,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/11.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 should be(expected)
       }
@@ -491,7 +491,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/12.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 should be(expected)
       }
@@ -503,7 +503,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/13.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 should be(expected)
       }
@@ -515,7 +515,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/14.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 should be(expected)
       }
@@ -527,7 +527,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/15.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 should be(expected)
       }
@@ -539,7 +539,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/16.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 should be(
           expected
@@ -553,7 +553,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/17.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 should be(
           expected
@@ -567,7 +567,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/18.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 should be(expected)
       }
@@ -579,7 +579,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/19.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 should be(expected)
       }
@@ -591,7 +591,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/20.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 should be(expected)
       }
@@ -603,7 +603,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/21.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 should be(expected)
       }
@@ -615,7 +615,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "src/test/resources/22.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 + n21 should be(expected)
       }
@@ -626,16 +626,16 @@ class CsvTableSpec extends WordSpecLike with Matchers {
       val rows = CsvTable.fromResource[Int]("01.csv")
 
       rows.heading should be("n")
-      forAll(rows) { _ should be(expected.next) }
+      forAll(rows) { _ should be(expected.next()) }
     }
 
     "create a Table from 2-column csv file in resources" in {
       val expected = Iterator(3, 5)
       val rows = CsvTable.fromResource[Int, Int]("02.csv")
 
-      rows.heading should be("n1", "n2")
+      rows.heading should be(("n1", "n2"))
       forAll(rows) { (n1, n2) =>
-        n1 + n2 should be(expected.next)
+        n1 + n2 should be(expected.next())
       }
     }
 
@@ -645,7 +645,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "03.csv"
         )
 
-      rows.heading should be("n1", "n2", "expected")
+      rows.heading should be(("n1", "n2", "expected"))
       forAll(rows) { (n1, n2, expected) =>
         n1 + n2 should be(expected)
       }
@@ -657,7 +657,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "04.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "expected")
+      rows.heading should be(("n1", "n2", "n3", "expected"))
       forAll(rows) { (n1, n2, n3, expected) =>
         n1 + n2 + n3 should be(expected)
       }
@@ -669,7 +669,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "05.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "expected"))
       forAll(rows) { (n1, n2, n3, n4, expected) =>
         n1 + n2 + n3 + n4 should be(expected)
       }
@@ -681,7 +681,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "06.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, expected) =>
         n1 + n2 + n3 + n4 + n5 should be(expected)
       }
@@ -693,7 +693,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "07.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 should be(expected)
       }
@@ -705,7 +705,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "08.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 should be(expected)
       }
@@ -717,7 +717,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "09.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 should be(expected)
       }
@@ -729,7 +729,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "10.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 should be(expected)
       }
@@ -741,7 +741,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "11.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 should be(expected)
       }
@@ -753,7 +753,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "12.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 should be(expected)
       }
@@ -765,7 +765,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "13.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 should be(expected)
       }
@@ -777,7 +777,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "14.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 should be(expected)
       }
@@ -789,7 +789,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "15.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 should be(expected)
       }
@@ -801,7 +801,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "16.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 should be(
           expected
@@ -815,7 +815,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "17.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 should be(
           expected
@@ -829,7 +829,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "18.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 should be(expected)
       }
@@ -841,7 +841,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "19.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 should be(expected)
       }
@@ -853,7 +853,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "20.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 should be(expected)
       }
@@ -865,7 +865,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "21.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 should be(expected)
       }
@@ -877,7 +877,7 @@ class CsvTableSpec extends WordSpecLike with Matchers {
           "22.csv"
         )
 
-      rows.heading should be("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected")
+      rows.heading should be(("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13", "n14", "n15", "n16", "n17", "n18", "n19", "n20", "n21", "expected"))
       forAll(rows) { (n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, expected) =>
         n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + n13 + n14 + n15 + n16 + n17 + n18 + n19 + n20 + n21 should be(expected)
       }
