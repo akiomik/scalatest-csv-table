@@ -8,6 +8,12 @@ scalaVersion := scala212
 crossScalaVersions := Seq(scala211, scala212)
 version := "1.0.2"
 organization := "com.github.akiomik"
+scmInfo := Some(
+  ScmInfo(
+    url(s"https://github.com/akiomik/${name.value}"),
+    s"git@github.com:akiomik/${name.value}.git"
+  )
+)
 description := "A scalatest helper for table driven testing with csv"
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
