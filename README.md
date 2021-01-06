@@ -7,7 +7,7 @@ A [scalatest](http://www.scalatest.org/) helper for loading csv files as [`Table
 
 ## Getting started
 
-scalatest-csv-table is currently available for Scala 2.11 and 2.12.
+scalatest-csv-table is currently available for Scala 2.12 and 2.13.
 
 Add the following lines to your `build.sbt`.
 
