@@ -6,7 +6,7 @@ lazy val scala213 = "2.13.4"
 name := "scalatest-csv-table"
 scalaVersion := scala213
 crossScalaVersions := Seq(scala212, scala213)
-version := "1.1.0"
+version := "1.2.0"
 organization := "com.github.akiomik"
 scmInfo := Some(
   ScmInfo(
