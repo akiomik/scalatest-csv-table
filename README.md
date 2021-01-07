@@ -14,7 +14,7 @@ Add the following lines to your `build.sbt`.
 ```scala
 resolvers += Resolver.jcenterRepo
 
-libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.1.0" % Test
+libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.2.0" % Test
 ```
 
 ## All releases
@@ -25,6 +25,7 @@ scalatest-csv-table supports some different versions of scalatest.
 | --------------------------- | ----------------- | ------------- |
 | 1.0.2                       | 3.0.x             | 2.11.x/2.12.x |
 | 1.1.0                       | 3.1.x             | 2.12.x/2.13.x |
+| 1.2.0                       | 3.2.x             | 2.12.x/2.13.x |
 
 ## Basic usage
 
