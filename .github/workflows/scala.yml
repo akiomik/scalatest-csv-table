@@ -27,6 +27,6 @@ jobs:
     - name: Run scalafmt
       run: sbt 'scalafmtCheckAll; scalafmtSbtCheck'
     - name: Run tests
-      run: sbt '+ test'
+      run: sbt '+ clean; + coverage; + test; + coverageReport'
     - name: Run mima
       run: sbt '++ 2.12.12 -v mimaReportBinaryIssues'
