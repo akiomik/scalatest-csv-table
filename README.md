@@ -2,6 +2,7 @@ scalatest-csv-table
 ===================
 [![Download](https://api.bintray.com/packages/akiomik/maven/scalatest-csv-table/images/download.svg)](https://bintray.com/akiomik/maven/scalatest-csv-table/_latestVersion)
 [![Scala CI](https://github.com/akiomik/scalatest-csv-table/workflows/Scala%20CI/badge.svg)](https://github.com/akiomik/scalatest-csv-table/actions?query=workflow%3A%22Scala+CI%22)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9f38579ddc03f2c6e5e8/test_coverage)](https://codeclimate.com/github/akiomik/scalatest-csv-table/test_coverage)
 
 A [scalatest](http://www.scalatest.org/) helper for loading csv files as [`Table`](http://www.scalatest.org/user_guide/table_driven_property_checks).
 
