@@ -20,7 +20,7 @@ licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html
 lazy val kantanCsvVersion = "0.6.1"
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.2.3",
+  "org.scalatest" %% "scalatest" % "3.2.5",
   "com.nrinaudo" %% "kantan.csv" % kantanCsvVersion,
   "com.nrinaudo" %% "kantan.csv-generic" % kantanCsvVersion
 )
