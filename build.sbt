@@ -8,6 +8,7 @@ scalaVersion := scala213
 crossScalaVersions := Seq(scala212, scala213)
 version := "1.2.0"
 organization := "io.github.akiomik"
+homepage := Some(url(s"https://github.com/akiomik/${name.value}"))
 scmInfo := Some(
   ScmInfo(
     url(s"https://github.com/akiomik/${name.value}"),
