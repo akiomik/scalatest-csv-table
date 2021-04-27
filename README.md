@@ -1,6 +1,6 @@
 scalatest-csv-table
 ===================
-[![Download](https://api.bintray.com/packages/akiomik/maven/scalatest-csv-table/images/download.svg)](https://bintray.com/akiomik/maven/scalatest-csv-table/_latestVersion)
+[![Latest version](https://index.scala-lang.org/akiomik/scalatest-csv-table/scalatest-csv-table/latest.svg?color=blue&style=flat)](https://index.scala-lang.org/akiomik/scalatest-csv-table/scalatest-csv-table)
 [![Scala CI](https://github.com/akiomik/scalatest-csv-table/workflows/Scala%20CI/badge.svg)](https://github.com/akiomik/scalatest-csv-table/actions?query=workflow%3A%22Scala+CI%22)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9f38579ddc03f2c6e5e8/test_coverage)](https://codeclimate.com/github/akiomik/scalatest-csv-table/test_coverage)
 
