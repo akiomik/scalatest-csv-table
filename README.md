@@ -13,10 +13,10 @@ scalatest-csv-table is currently available for Scala 2.12 and 2.13.
 Add the following lines to your `build.sbt`.
 
 ```scala
-resolvers += Resolver.jcenterRepo
-
-libraryDependencies += "com.github.akiomik" %% "scalatest-csv-table" % "1.2.0" % Test
+libraryDependencies += "io.github.akiomik" %% "scalatest-csv-table" % "1.2.0" % Test
 ```
+
+NOTE: The groupid has been changed from `com.github.akiomik` to `io.github.akiomik` because the maven repository has been changed from bintray to sonatype.
 
 ## All releases
 

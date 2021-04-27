@@ -7,7 +7,7 @@ name := "scalatest-csv-table"
 scalaVersion := scala213
 crossScalaVersions := Seq(scala212, scala213)
 version := "1.2.0"
-organization := "com.github.akiomik"
+organization := "io.github.akiomik"
 scmInfo := Some(
   ScmInfo(
     url(s"https://github.com/akiomik/${name.value}"),
