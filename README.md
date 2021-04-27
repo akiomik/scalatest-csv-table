@@ -13,7 +13,7 @@ scalatest-csv-table is currently available for Scala 2.12 and 2.13.
 Add the following lines to your `build.sbt`.
 
 ```scala
-libraryDependencies += "io.github.akiomik" %% "scalatest-csv-table" % "1.2.0" % Test
+libraryDependencies += "io.github.akiomik" %% "scalatest-csv-table" % "1.2.1" % Test
 ```
 
 NOTE: The groupid has been changed from `com.github.akiomik` to `io.github.akiomik` because the maven repository has been changed from bintray to sonatype.
@@ -26,7 +26,7 @@ scalatest-csv-table supports some different versions of scalatest.
 | --------------------------- | ----------------- | ------------- |
 | 1.0.2                       | 3.0.x             | 2.11.x/2.12.x |
 | 1.1.0                       | 3.1.x             | 2.12.x/2.13.x |
-| 1.2.0                       | 3.2.x             | 2.12.x/2.13.x |
+| 1.2.1                       | 3.2.x             | 2.12.x/2.13.x |
 
 ## Basic usage
 
