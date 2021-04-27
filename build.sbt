@@ -7,7 +7,7 @@ name := "scalatest-csv-table"
 scalaVersion := scala213
 crossScalaVersions := Seq(scala212, scala213)
 version := "1.2.0"
-organization := "com.github.akiomik"
+organization := "io.github.akiomik"
 scmInfo := Some(
   ScmInfo(
     url(s"https://github.com/akiomik/${name.value}"),
@@ -16,6 +16,14 @@ scmInfo := Some(
 )
 description := "A scalatest helper for table driven testing with csv"
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+developers := List(
+  Developer(
+    id = "akiomik",
+    name = "Akiomi Kamakura",
+    email = "akiomik@gmail.com",
+    url = url("https://github.com/akiomik")
+  )
+)
 
 lazy val kantanCsvVersion = "0.6.1"
 
@@ -39,5 +47,6 @@ scalacOptions ++= Seq(
 resolvers += Resolver.jcenterRepo
 mimaPreviousArtifacts := Set(organization.value %% name.value % "1.0.0")
 
-bintrayRepository := "maven"
-bintrayOrganization := None
+sonatypeCredentialHost := "s01.oss.sonatype.org"
+publishTo := sonatypePublishToBundle.value
+publishMavenStyle := true
