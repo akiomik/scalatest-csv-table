@@ -45,7 +45,7 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard"
 )
 
-resolvers += Resolver.jcenterRepo
+versionScheme := Some("semver-spec")
 mimaPreviousArtifacts := Set(organization.value %% name.value % "1.0.0")
 
 sonatypeCredentialHost := "s01.oss.sonatype.org"
