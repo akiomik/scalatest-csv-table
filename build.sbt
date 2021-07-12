@@ -29,7 +29,7 @@ developers := List(
 lazy val kantanCsvVersion = "0.6.1"
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.2.8",
+  "org.scalatest" %% "scalatest" % "3.2.9",
   "com.nrinaudo" %% "kantan.csv" % kantanCsvVersion,
   "com.nrinaudo" %% "kantan.csv-generic" % kantanCsvVersion
 )
@@ -45,7 +45,7 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard"
 )
 
-resolvers += Resolver.jcenterRepo
+versionScheme := Some("semver-spec")
 mimaPreviousArtifacts := Set(organization.value %% name.value % "1.0.0")
 
 sonatypeCredentialHost := "s01.oss.sonatype.org"
