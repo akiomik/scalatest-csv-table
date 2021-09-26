@@ -1,7 +1,8 @@
 enablePlugins(spray.boilerplate.BoilerplatePlugin)
 
+
 lazy val scala212 = "2.12.15"
-lazy val scala213 = "2.13.4"
+lazy val scala213 = "2.13.6"
 
 name := "scalatest-csv-table"
 scalaVersion := scala213
@@ -29,7 +30,7 @@ developers := List(
 lazy val kantanCsvVersion = "0.6.1"
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.2.9",
+  "org.scalatest" %% "scalatest" % "3.2.10",
   "com.nrinaudo" %% "kantan.csv" % kantanCsvVersion,
   "com.nrinaudo" %% "kantan.csv-generic" % kantanCsvVersion
 )
