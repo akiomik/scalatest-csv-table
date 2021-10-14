@@ -26,7 +26,7 @@ developers := List(
   )
 )
 
-lazy val kantanCsvVersion = "0.6.1"
+lazy val kantanCsvVersion = "0.6.2"
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.10",
