@@ -1,7 +1,7 @@
 enablePlugins(spray.boilerplate.BoilerplatePlugin)
 
 lazy val scala212 = "2.12.15"
-lazy val scala213 = "2.13.7"
+lazy val scala213 = "2.13.8"
 
 name := "scalatest-csv-table"
 scalaVersion := scala213
