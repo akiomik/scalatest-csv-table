@@ -51,3 +51,6 @@ mimaPreviousArtifacts := Set(organization.value %% name.value % "1.0.0")
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 publishTo := sonatypePublishToBundle.value
 publishMavenStyle := true
+
+// needed for scalac-scoverage-reporter
+evictionErrorLevel := Level.Info
