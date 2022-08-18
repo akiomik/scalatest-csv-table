@@ -36,4 +36,4 @@ jobs:
         coverageLocations: |
           ${{github.workspace}}/target/*/coverage-report/cobertura.xml:cobertura
     - name: Run mima
-      run: sbt '++ 2.12.15 -v mimaReportBinaryIssues'
+      run: sbt '++ 2.12.16 -v mimaReportBinaryIssues'
