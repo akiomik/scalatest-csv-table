@@ -19,7 +19,7 @@ jobs:
         cache: sbt
     - run: sbt 'scalafmtCheckAll; scalafmtSbtCheck'
     - run: sbt '+ clean; + coverage; + test; + coverageReport'
-    - uses: paambaati/codeclimate-action@v2.7.5
+    - uses: paambaati/codeclimate-action@v3.2
       env:
         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
       with:
